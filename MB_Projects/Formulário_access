@@ -1,0 +1,67 @@
+Option Compare Database
+
+
+Private Sub cmdlimpar_Click()
+txt200.Value = 0
+txt100.Value = 0
+txt50.Value = 0
+txt20.Value = 0
+txt10.Value = 0
+txt5.Value = 0
+txt2.Value = 0
+txtqtd = 9999
+
+End Sub
+
+Private Sub Form_open(Cancel As Integer)
+
+txt200.Value = 0
+txt100.Value = 0
+txt50.Value = 0
+txt20.Value = 0
+txt10.Value = 0
+txt5.Value = 0
+txt2.Value = 0
+txtqtd = 9999
+
+End Sub
+
+Private Sub PERFIL_CMB_AfterUpdate()
+
+auxprf.Value = PERFIL_CMB.Value
+DoCmd.RunMacro "M_CONSULTA"
+
+End Sub
+
+Private Sub TESOURARIA_CMB_AfterUpdate()
+
+auxtece.Value = TESOURARIA_CMB.Value
+DoCmd.RunMacro "M_CONSULTA"
+
+End Sub
+
+
+
+Private Sub cmdconfirma_Click()
+
+Dim msg, style, response
+If (txt200 > 0 Or txt100.Value > 0 Or txt50.Value > 0 Or txt20.Value > 0 Or txt10.Value > 0 Or txt5.Value > 0 Or txt2.Value > 0) And (txt200.Value <= 440000 And txt100.Value <= 660000 And txt50.Value <= 345000 And txt20.Value <= 40000 And txt10.Value <= 20000 And txt5.Value <= 10000 And txt2.Value <= 4000) And ((txt200.Value / 200) Mod 100 = 0 And (txt100.Value / 100) Mod 100 = 0 And (txt50.Value / 50) Mod 100 = 0 And (txt20.Value / 20) Mod 100 = 0 And (txt10.Value / 10) Mod 100 = 0 And (txt5.Value / 5) Mod 100 = 0 And (txt2.Value / 2) Mod 100 = 0) Then
+msg = "A soma de composição informada é:" & Chr(13) & (txt200.Value + txt100.Value + txt50.Value + txt20.Value + txt10.Value + txt5.Value + txt2.Value) & Chr(13) & "Deseja continuar?"
+style = vbYesNo
+
+response = MsgBox(msg, style, "ALERTA!!!")
+    If response = vbYes Then    ' User chose Yes.
+    MyString = "Yes"    ' Perform some action.
+    
+      DoCmd.RunSQL "INSERT INTO TI_AJUSTE_COMP VALUES (" & auxtece & ", " & auxprf & "," & txtqtd & ", " & txt2 & "  , " & txt5 & ", " & txt10 & ", " & txt20 & ", " & txt50 & ", " & txt100 & ", " & txt200 & ")"
+            
+    Else    ' User chose No.
+    MyString = "No"    ' Perform some action.
+    End If
+Else
+                MsgBox ("Possíveis causas:" & Chr(13) & "1 - Valores e branco;" & Chr(13) & "2 - Ultrapassagem do limite de cédulas;" & Chr(13) & "3 - Quebra da composição em dezena"), vbCritical, "ERRO!!!"
+End If
+
+
+End Sub
+
