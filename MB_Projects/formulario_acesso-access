@@ -1,0 +1,31 @@
+
+Log 
+ DoCmd.RunSQL "INSERT INTO TC_LOG_ALTERACOES ([IDT_PROCESSO], [DTA_ALT], [COD_USU], [LOG_NVO_VLR]) VALUES ('ALT_PERFIL_COMP','" & PFLAUXDATA & "','" & UsuarioRede & "','PDR:' + '" & AUXPDR & "' + '|NVL:' + '" & CmbPflVale.Value & "' + '|COMP:' + '" & PFLCmbcomp.Value & "' + '|DND:' + '" & PFLCmbPto.Value & "' + '|PER:' + 'VALE')", 0
+ 
+
+Private Sub Form_Load()
+'DoCmd.RunMacro "M_CONSULTA"
+If UsuarioRede = "B040466" Or UsuarioRede = "b036777" Or UsuarioRede = "b031076" Or UsuarioRede = "B039918" Then
+    BTALTPFLCOMP.Enabled = True
+    btper.Enabled = True
+    bttece.Enabled = True
+    BTGR.Enabled = True
+Else
+    BTALTPFLCOMP.Enabled = False
+    btper.Enabled = False
+    bttece.Enabled = False
+    BTGR.Enabled = False
+End If
+
+End Sub
+
+
+Function UsuarioRede() As String
+    Dim GetUserN
+    Dim ObjNetwork
+    Set ObjNetwork = CreateObject("WScript.Network")
+    GetUserN = ObjNetwork.UserName
+    UsuarioRede = GetUserN
+End Function
+
+
